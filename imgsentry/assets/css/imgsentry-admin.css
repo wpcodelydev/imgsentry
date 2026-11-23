@@ -1,0 +1,1059 @@
+/**
+ * ImgSentry Admin CSS
+ *
+ * @package ImgSentry
+ */
+
+.imgsentry-wrap {
+	margin: 20px 20px 0 0;
+	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	color: #1d2327;
+}
+
+/* Header & Stats Cards */
+.imgsentry-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	background: #ffffff;
+	padding: 20px 24px;
+	border: 1px solid #c3c4c7;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.imgsentry-header-title h1 {
+	font-size: 24px;
+	font-weight: 600;
+	margin: 0 0 4px 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: #1d2327;
+}
+
+.imgsentry-header-title h1 .dashicons {
+	font-size: 28px;
+	width: 28px;
+	height: 28px;
+	color: #2271b1;
+}
+
+.imgsentry-subtitle {
+	margin: 0;
+	color: #646970;
+	font-size: 13px;
+}
+
+.imgsentry-stats-cards {
+	display: flex;
+	gap: 16px;
+}
+
+.imgsentry-stat-card {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 12px 18px;
+	min-width: 130px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.imgsentry-stat-trash {
+	background: #fcf0f1;
+	border-color: #f8cbad;
+}
+
+.imgsentry-stat-label {
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #646970;
+	font-weight: 600;
+}
+
+.imgsentry-stat-value {
+	font-size: 22px;
+	font-weight: 700;
+	color: #1d2327;
+	line-height: 1.2;
+}
+
+.imgsentry-stat-trash .imgsentry-stat-value {
+	color: #d63638;
+}
+
+.imgsentry-stat-sub {
+	font-size: 12px;
+	color: #50575e;
+}
+
+/* Notice Info Banner */
+.imgsentry-notice-info {
+	background: #f0f6fc;
+	border-left: 4px solid #2271b1;
+	padding: 10px 16px;
+	margin-bottom: 20px;
+	border-radius: 0 4px 4px 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	color: #1d2327;
+}
+
+/* Tabs */
+.imgsentry-nav-tabs {
+	margin-bottom: 20px;
+}
+
+.imgsentry-nav-tabs .nav-tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 500;
+}
+
+.imgsentry-badge {
+	background: #646970;
+	color: #ffffff;
+	font-size: 11px;
+	padding: 2px 7px;
+	border-radius: 10px;
+	font-weight: 600;
+}
+
+.imgsentry-badge-red {
+	background: #d63638;
+}
+
+/* Filter Bar */
+.imgsentry-filter-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #ffffff;
+	padding: 14px 18px;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	margin-bottom: 16px;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.imgsentry-filter-group {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.imgsentry-select,
+.imgsentry-input {
+	padding: 4px 10px;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	font-size: 13px;
+	background: #ffffff;
+}
+
+.imgsentry-view-toggle {
+	display: flex;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.imgsentry-view-btn {
+	background: #ffffff;
+	border: none;
+	padding: 6px 10px;
+	cursor: pointer;
+	color: #50575e;
+	display: flex;
+	align-items: center;
+}
+
+.imgsentry-view-btn.active {
+	background: #2271b1;
+	color: #ffffff;
+}
+
+/* Toolbar */
+.imgsentry-toolbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+}
+
+.imgsentry-toolbar-left {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.imgsentry-checkbox-label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.imgsentry-btn-danger {
+	color: #d63638 !important;
+	border-color: #d63638 !important;
+}
+
+.imgsentry-btn-danger:hover {
+	background: #d63638 !important;
+	color: #ffffff !important;
+}
+
+/* Media Grid Container */
+#imgsentry-media-container.imgsentry-grid-view {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 16px;
+	margin-bottom: 24px;
+}
+
+/* Media Card Item */
+.imgsentry-card-item {
+	background: #ffffff;
+	border: 1px solid #c3c4c7;
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+	display: flex;
+	flex-direction: column;
+}
+
+.imgsentry-card-item:hover {
+	border-color: #2271b1;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.imgsentry-item-select {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	z-index: 10;
+	background: rgba(255, 255, 255, 0.9);
+	padding: 2px 6px;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.imgsentry-item-preview {
+	height: 140px;
+	background: #f0f0f1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	overflow: hidden;
+}
+
+.imgsentry-item-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.imgsentry-file-icon {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	color: #2271b1;
+}
+
+.imgsentry-file-icon .dashicons {
+	font-size: 48px;
+	width: 48px;
+	height: 48px;
+}
+
+.imgsentry-ext {
+	font-size: 11px;
+	font-weight: 700;
+	background: #2271b1;
+	color: #ffffff;
+	padding: 1px 6px;
+	border-radius: 3px;
+	text-transform: uppercase;
+}
+
+.imgsentry-badges-container {
+	position: absolute;
+	bottom: 8px;
+	right: 8px;
+	display: flex;
+	gap: 4px;
+}
+
+.imgsentry-badge-tag {
+	font-size: 10px;
+	font-weight: 700;
+	padding: 2px 6px;
+	border-radius: 3px;
+	text-transform: uppercase;
+}
+
+.imgsentry-badge-use {
+	background: #f0f6fc;
+	color: #0969da;
+	border: 1px solid #54a3ff;
+}
+
+.imgsentry-badge-unattached {
+	background: #f6f7f7;
+	color: #646970;
+	border: 1px solid #dcdcde;
+}
+
+.imgsentry-item-details {
+	padding: 12px;
+	flex-grow: 1;
+}
+
+.imgsentry-item-title {
+	margin: 0 0 6px 0;
+	font-size: 13px;
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #1d2327;
+}
+
+.imgsentry-item-meta {
+	margin: 0 0 4px 0;
+	font-size: 11px;
+	color: #646970;
+}
+
+.imgsentry-item-date {
+	margin: 0;
+	font-size: 11px;
+	color: #8c8f94;
+}
+
+.imgsentry-trashed-info {
+	margin: 4px 0 0 0;
+	font-size: 11px;
+	color: #d63638;
+	font-weight: 600;
+}
+
+.imgsentry-item-actions {
+	padding: 8px 12px;
+	background: #f6f7f7;
+	border-top: 1px solid #f0f0f1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* Empty Notice & Loading */
+.imgsentry-empty-notice {
+	background: #ffffff;
+	border: 1px dashed #c3c4c7;
+	padding: 40px;
+	text-align: center;
+	border-radius: 8px;
+	grid-column: 1 / -1;
+}
+
+.imgsentry-empty-notice .dashicons {
+	font-size: 40px;
+	width: 40px;
+	height: 40px;
+	color: #8c8f94;
+}
+
+.imgsentry-loading-spinner {
+	grid-column: 1 / -1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	padding: 40px;
+	background: #ffffff;
+	border-radius: 8px;
+}
+
+/* Pagination */
+.imgsentry-pagination-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
+	padding-top: 16px;
+	border-top: 1px solid #dcdcde;
+}
+
+.imgsentry-pagination-info {
+	font-size: 13px;
+	color: #646970;
+}
+
+.imgsentry-page-current {
+	display: inline-block;
+	padding: 4px 10px;
+	background: #2271b1;
+	color: #ffffff;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 13px;
+}
+
+/* Settings & Audit Log Cards */
+.imgsentry-settings-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+.imgsentry-card {
+	background: #ffffff;
+	border: 1px solid #c3c4c7;
+	border-radius: 8px;
+	padding: 20px;
+}
+
+.imgsentry-card h2 {
+	margin-top: 0;
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+/* Modals */
+.imgsentry-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(2px);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 99999;
+}
+
+.imgsentry-modal.active {
+	display: flex;
+}
+
+.imgsentry-modal-content {
+	background: #ffffff;
+	border-radius: 8px;
+	width: 100%;
+	max-width: 480px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	overflow: hidden;
+}
+
+.imgsentry-modal-header {
+	background: #f6f7f7;
+	padding: 16px 20px;
+	border-bottom: 1px solid #dcdcde;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.imgsentry-modal-header h3 {
+	margin: 0;
+	font-size: 16px;
+	color: #d63638;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.imgsentry-modal-close {
+	background: none;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+	color: #646970;
+}
+
+.imgsentry-modal-body {
+	padding: 20px;
+}
+
+.imgsentry-warning-text {
+	color: #d63638;
+	font-weight: 700;
+	font-size: 14px;
+}
+
+.imgsentry-radio-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 16px 0;
+	background: #f6f7f7;
+	padding: 12px;
+	border-radius: 6px;
+}
+
+.imgsentry-modal-footer {
+	background: #f6f7f7;
+	padding: 12px 20px;
+	border-top: 1px solid #dcdcde;
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+/* Safety Checklist Modal Styles */
+.imgsentry-safety-modal-content {
+	max-width: 680px;
+	border-radius: 12px;
+}
+
+.imgsentry-safety-modal-content .imgsentry-modal-header h3 {
+	color: #1d2327;
+	font-weight: 700;
+	font-size: 20px;
+}
+
+.imgsentry-safety-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.imgsentry-safety-card {
+	padding: 16px;
+	border-radius: 10px;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.imgsentry-safety-card p {
+	margin: 0;
+	color: #475569;
+}
+
+.imgsentry-safety-card-title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+
+.imgsentry-safety-blue {
+	background: #f0f6fc;
+	border: 1px solid #c8e1ff;
+}
+
+.imgsentry-safety-blue .imgsentry-safety-card-title {
+	color: #2271b1;
+}
+
+.imgsentry-safety-purple {
+	background: #f8f5ff;
+	border: 1px solid #e1d5f5;
+}
+
+.imgsentry-safety-purple .imgsentry-safety-card-title {
+	color: #8250df;
+}
+
+.imgsentry-safety-green {
+	background: #f0fdf4;
+	border: 1px solid #bbf7d0;
+	margin-bottom: 16px;
+}
+
+.imgsentry-safety-green .imgsentry-safety-card-title {
+	color: #15803d;
+}
+
+.imgsentry-safety-checkboxes {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 12px;
+}
+
+.imgsentry-safety-checkboxes label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 12px;
+	color: #1d2327;
+	cursor: pointer;
+}
+
+.imgsentry-safety-note {
+	font-size: 11px;
+	color: #8c8f94;
+	margin: 0;
+}
+
+/* Toast */
+.imgsentry-toast {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	padding: 12px 20px;
+	border-radius: 6px;
+	color: #ffffff;
+	font-weight: 500;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	opacity: 0;
+	transform: translateY(20px);
+	transition: all 0.3s ease;
+	z-index: 100000;
+	pointer-events: none;
+}
+
+.imgsentry-toast.show {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.imgsentry-toast-success {
+	background: #008a20;
+}
+
+.imgsentry-toast-error {
+	background: #d63638;
+}
+
+/* Fallback Notice Suppression for all ImgSentry screens */
+body.toplevel_page_imgsentry #wpbody-content > .notice,
+body.toplevel_page_imgsentry #wpbody-content > .updated,
+body.toplevel_page_imgsentry #wpbody-content > .error,
+body.toplevel_page_imgsentry #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-scanner #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-scanner #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-scanner #wpbody-content > .error,
+body.imgsentry_page_imgsentry-scanner #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-unused #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-unused #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-unused #wpbody-content > .error,
+body.imgsentry_page_imgsentry-unused #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-used #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-used #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-used #wpbody-content > .error,
+body.imgsentry_page_imgsentry-used #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-duplicate #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-duplicate #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-duplicate #wpbody-content > .error,
+body.imgsentry_page_imgsentry-duplicate #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-image_optimization #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-image_optimization #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-image_optimization #wpbody-content > .error,
+body.imgsentry_page_imgsentry-image_optimization #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-trash #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-trash #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-trash #wpbody-content > .error,
+body.imgsentry_page_imgsentry-trash #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-reports #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-reports #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-reports #wpbody-content > .error,
+body.imgsentry_page_imgsentry-reports #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-settings #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-settings #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-settings #wpbody-content > .error,
+body.imgsentry_page_imgsentry-settings #wpbody-content > .is-dismissible,
+body.imgsentry_page_imgsentry-help #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-help #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-help #wpbody-content > .error,
+body.imgsentry_page_imgsentry-about #wpbody-content > .notice,
+body.imgsentry_page_imgsentry-about #wpbody-content > .updated,
+body.imgsentry_page_imgsentry-about #wpbody-content > .error,
+div[class*="media-cleanup"] #wpbody-content > .notice,
+div[class*="media-cleanup"] #wpbody-content > .updated,
+div[class*="media-cleanup"] #wpbody-content > .error {
+	display: none !important;
+}
+
+/* ==========================================================================
+   ImgSentry File Manager - Fullscreen Display Mode
+   Exclusively display plugin workspace: <main class="p-8 flex-1 space-y-6"><div class="imgsentry-fm-wrapper w-full">
+   Completely hide WordPress admin bar (top menu), admin sidebar (all side menu), footer, and notices.
+   ========================================================================== */
+
+/* 1. Prevent body scrolling in fullscreen */
+body.fm-body-fullscreen {
+	overflow: hidden !important;
+}
+
+/* 2. WordPress Admin Toolbar (Top Menu) Reset */
+html.wp-toolbar body.fm-body-fullscreen,
+body.fm-body-fullscreen {
+	padding-top: 0 !important;
+	margin-top: 0 !important;
+}
+
+body.fm-body-fullscreen #wpadminbar,
+body.fm-body-fullscreen #wpadminbar *,
+html.wp-toolbar body.fm-body-fullscreen #wpadminbar {
+	display: none !important;
+	visibility: hidden !important;
+	height: 0 !important;
+	min-height: 0 !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* 3. WordPress Admin Sidebar (All Side Menu) Hide */
+body.fm-body-fullscreen #adminmenumain,
+body.fm-body-fullscreen #adminmenuwrap,
+body.fm-body-fullscreen #adminmenuback,
+body.fm-body-fullscreen #adminmenu,
+body.fm-body-fullscreen #collapse-menu,
+html.wp-toolbar body.fm-body-fullscreen #adminmenuwrap,
+html.wp-toolbar body.fm-body-fullscreen #adminmenuback {
+	display: none !important;
+	visibility: hidden !important;
+	width: 0 !important;
+	min-width: 0 !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* 4. WordPress Admin Content & Wrapper Offsets Reset */
+body.fm-body-fullscreen #wpcontent,
+body.fm-body-fullscreen #wpbody,
+body.fm-body-fullscreen #wpbody-content,
+body.fm-body-fullscreen #wpfooter,
+body.fm-body-fullscreen #wpwrap,
+html.wp-toolbar body.fm-body-fullscreen #wpcontent {
+	margin: 0 !important;
+	padding: 0 !important;
+	margin-left: 0 !important;
+	padding-top: 0 !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	padding-bottom: 0 !important;
+	width: 100vw !important;
+	max-width: 100vw !important;
+	min-height: 100vh !important;
+}
+
+body.fm-body-fullscreen #wpfooter {
+	display: none !important;
+}
+
+/* 5. Hide Top Plugin Header, Horizontal Navigation Tabs, & Notices */
+body.fm-body-fullscreen header,
+body.fm-body-fullscreen nav,
+body.fm-body-fullscreen .sticky,
+body.fm-body-fullscreen div.sticky,
+body.fm-body-fullscreen .imgsentry-header-card,
+body.fm-body-fullscreen .imgsentry-top-bar,
+body.fm-body-fullscreen .imgsentry-nav-bar,
+body.fm-body-fullscreen .imgsentry-header,
+body.fm-body-fullscreen .imgsentry-nav-tabs,
+body.fm-body-fullscreen #imgsentry-nav-tabs,
+body.fm-body-fullscreen .imgsentry-nav-tab-wrapper,
+body.fm-body-fullscreen .nav-tab-wrapper,
+body.fm-body-fullscreen #imgsentry-plugin-root > div > div.flex > div > div.sticky,
+body.fm-body-fullscreen main > *:not(.imgsentry-fm-wrapper):not(#imgsentry-fm-container) {
+	display: none !important;
+	visibility: hidden !important;
+	height: 0 !important;
+	min-height: 0 !important;
+	pointer-events: none !important;
+}
+
+/* 6. Main Plugin Workspace Expansion */
+body.fm-body-fullscreen #imgsentry-plugin-root,
+body.fm-body-fullscreen #imgsentry-plugin-root > div,
+body.fm-body-fullscreen #imgsentry-plugin-root .wrap.imgsentry-wrap,
+body.fm-body-fullscreen .wrap.imgsentry-wrap {
+	margin: 0 !important;
+	padding: 0 !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	max-width: 100vw !important;
+	max-height: 100vh !important;
+	isolation: auto !important;
+	transform: none !important;
+	contain: none !important;
+}
+
+body.fm-body-fullscreen main,
+body.fm-body-fullscreen main.p-8,
+body.fm-body-fullscreen main.flex-1 {
+	margin: 0 !important;
+	padding: 0 !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	max-width: 100vw !important;
+	max-height: 100vh !important;
+	overflow: hidden !important;
+	display: flex !important;
+	flex-direction: column !important;
+	flex: 1 1 100% !important;
+}
+
+/* 7. Fullscreen File Manager Wrapper (<div class="imgsentry-fm-wrapper w-full">) */
+body.fm-body-fullscreen .imgsentry-fm-wrapper,
+.imgsentry-fm-wrapper.fm-is-fullscreen,
+.imgsentry-fm-wrap.fm-is-fullscreen {
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	z-index: 99999999 !important;
+	background: #0f172a !important;
+	margin: 0 !important;
+	padding: 16px !important;
+	box-sizing: border-box !important;
+	overflow: hidden !important;
+	display: flex !important;
+	flex-direction: column !important;
+	isolation: auto !important;
+	transform: none !important;
+	contain: none !important;
+}
+
+/* 8. Fullscreen Container Inner Flex Expansion */
+body.fm-body-fullscreen #imgsentry-fm-container,
+.imgsentry-fm-wrapper.fm-is-fullscreen #imgsentry-fm-container,
+.imgsentry-fm-wrap.fm-is-fullscreen #imgsentry-fm-container {
+	height: 100% !important;
+	max-height: 100% !important;
+	min-height: 0 !important;
+	flex: 1 1 auto !important;
+	border-radius: 8px !important;
+	display: flex !important;
+	flex-direction: row !important;
+}
+
+/* Fallback if direct container fullscreen */
+#imgsentry-fm-container.fm-is-fullscreen {
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	z-index: 99999999 !important;
+	background: #0f172a !important;
+	margin: 0 !important;
+	padding: 16px !important;
+	box-sizing: border-box !important;
+	overflow: hidden !important;
+	isolation: auto !important;
+	transform: none !important;
+	contain: none !important;
+}
+
+/* Custom Dark Confirmation Modal (Mockup Replica) */
+.imgsentry-fm-confirm-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.65);
+	backdrop-filter: blur(4px);
+	z-index: 100000200 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	animation: fmConfirmFadeIn 0.15s ease forwards;
+}
+
+@keyframes fmConfirmFadeIn {
+	from { opacity: 0; transform: scale(0.97); }
+	to { opacity: 1; transform: scale(1); }
+}
+
+.imgsentry-fm-confirm-card {
+	background: #1c1c1e;
+	border: 1px solid #333336;
+	border-radius: 12px;
+	width: 100%;
+	max-width: 440px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+	padding: 24px;
+	box-sizing: border-box;
+	color: #ffffff;
+	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.imgsentry-fm-confirm-content {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+	margin-bottom: 24px;
+}
+
+.imgsentry-fm-confirm-icon-badge {
+	width: 42px;
+	height: 42px;
+	min-width: 42px;
+	border-radius: 50%;
+	background: #3a1914;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #e05d43;
+	flex-shrink: 0;
+}
+
+.imgsentry-fm-confirm-icon-badge svg {
+	width: 22px;
+	height: 22px;
+	display: block;
+}
+
+.imgsentry-fm-confirm-text-group {
+	flex: 1;
+}
+
+.imgsentry-fm-confirm-title {
+	margin: 0 0 8px 0;
+	font-size: 18px;
+	font-weight: 600;
+	color: #f5f5f5;
+	line-height: 1.3;
+	word-break: break-word;
+}
+
+.imgsentry-fm-confirm-desc {
+	margin: 0;
+	font-size: 13.5px;
+	color: #a0a0a0;
+	line-height: 1.45;
+}
+
+.imgsentry-fm-confirm-actions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 12px;
+}
+
+.imgsentry-fm-confirm-btn-cancel {
+	background: transparent !important;
+	border: 1px solid #444446 !important;
+	color: #d1d1d6 !important;
+	border-radius: 8px !important;
+	padding: 9px 18px !important;
+	font-size: 13.5px !important;
+	font-weight: 500 !important;
+	cursor: pointer;
+	line-height: 1.2 !important;
+	transition: background 0.15s ease, border-color 0.15s ease;
+	box-shadow: none !important;
+}
+
+.imgsentry-fm-confirm-btn-cancel:hover {
+	background: rgba(255, 255, 255, 0.08) !important;
+	border-color: #555558 !important;
+	color: #ffffff !important;
+}
+
+.imgsentry-fm-confirm-btn-destructive {
+	background: #a61e69 !important;
+	border: none !important;
+	color: #ffffff !important;
+	border-radius: 8px !important;
+	padding: 9px 20px !important;
+	font-size: 13.5px !important;
+	font-weight: 600 !important;
+	cursor: pointer;
+	line-height: 1.2 !important;
+	transition: opacity 0.15s ease, transform 0.1s ease;
+	box-shadow: 0 2px 8px rgba(166, 30, 105, 0.35) !important;
+}
+
+.imgsentry-fm-confirm-btn-destructive:hover {
+	opacity: 0.92;
+	color: #ffffff !important;
+}
+
+.imgsentry-fm-confirm-btn-destructive:active {
+	transform: scale(0.98);
+}
+
+/* Folder Filter & Leading Search Icon */
+.imgsentry-fm-folder-browser-modal .fm-folder-filter-wrap,
+.imgsentry-folder-browser-modal .fm-folder-filter-wrap,
+#imgsentry-plugin-root .fm-folder-filter-wrap,
+.fm-folder-filter-wrap {
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+	height: 32px !important;
+	width: 100% !important;
+	max-width: 320px !important;
+}
+
+.imgsentry-fm-folder-browser-modal .fm-folder-filter-icon-slot,
+.imgsentry-folder-browser-modal .fm-folder-filter-icon-slot,
+#imgsentry-plugin-root .fm-folder-filter-icon-slot,
+.fm-folder-filter-icon-slot {
+	position: absolute !important;
+	left: 10px !important;
+	top: 0 !important;
+	bottom: 0 !important;
+	height: 100% !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	pointer-events: none !important;
+	z-index: 5 !important;
+}
+
+.imgsentry-fm-folder-browser-modal .fm-folder-filter-icon,
+.imgsentry-folder-browser-modal .fm-folder-filter-icon,
+#imgsentry-plugin-root .fm-folder-filter-icon,
+.fm-folder-filter-icon {
+	width: 14px !important;
+	height: 14px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	display: block !important;
+	pointer-events: none !important;
+	color: #94a3b8 !important;
+}
+
+.imgsentry-fm-folder-browser-modal input.fm-folder-filter-input,
+.imgsentry-folder-browser-modal input.fm-folder-filter-input,
+#imgsentry-plugin-root input.fm-folder-filter-input,
+input.fm-folder-filter-input {
+	box-sizing: border-box !important;
+	width: 100% !important;
+	height: 32px !important;
+	min-height: 32px !important;
+	max-height: 32px !important;
+	line-height: 32px !important;
+	padding: 0 12px 0 32px !important;
+	font-size: 12px !important;
+	margin: 0 !important;
+	vertical-align: middle !important;
+}
+
+
+

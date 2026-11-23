@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+coverage/
+.DS_Store
+*.log
+.env*
+workspace/
+app/
+tmp/
+tmp_scripts/
+__pycache__/
+*.bak
+*.orig
+*.patch
+bun.lock
+metadata.json

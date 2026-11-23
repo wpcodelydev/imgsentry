@@ -1,0 +1,2257 @@
+@import "tailwindcss";
+
+/* Dark mode follows the plugin's own toggle (body.dark), not the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+@source not "./data";
+
+body, #imgsentry-plugin-root, button, input, select, textarea, optgroup {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+}
+
+:where(#imgsentry-plugin-root) :is(p, h1, h2, h3, h4, h5, h6) {
+  margin: 0;
+}
+
+.page-title {
+  font-family: "Red Hat Display", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  font-size: 24px !important;
+  color: #A61E69 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.09em !important;
+}
+
+.react-datepicker {
+  @apply !rounded-xl !border !border-gray-200 dark:!border-slate-700 !bg-white dark:!bg-slate-800 !shadow-xl;
+}
+.react-datepicker__header {
+  @apply !bg-transparent !border-b !border-gray-100 dark:!border-slate-700;
+}
+.react-datepicker__day--selected, .react-datepicker__day--in-range {
+  @apply !bg-gradient-to-r !from-purple-500 !to-blue-500 !text-white;
+}
+.react-datepicker__day--keyboard-selected {
+  @apply !bg-purple-100 !text-purple-900;
+}
+
+:root {
+  --fm-z-dropdown: 1000;
+  --fm-z-fullscreen: 100000000;          /* 100,000,000 - Fullscreen wrapper (exceeds WP Admin Bar 99,999) */
+  --fm-z-modal-backdrop: 100000100;      /* 100,000,100 - Modals, Lightbox, Code editor, Activity Log drawer */
+  --fm-z-fullscreen-hint: 100000200;     /* 100,000,200 - Floating Esc exit hint pill */
+  --fm-z-context-menu: 100000300;        /* 100,000,300 - Right-click context menu */
+  --fm-z-context-submenu: 100000350;     /* 100,000,350 - Context menu flyout submenus */
+  --fm-z-toast: 100000400;               /* 100,000,400 - Toast notifications */
+}
+
+/* Fix z-index stacking context for WP File Manager toolbar and dropdowns */
+.imgsentry-fm-wrapper {
+  position: relative;
+  isolation: isolate;
+}
+
+/* WP File Manager Normal Layout & Scroll Constraints */
+.imgsentry-fm-container {
+  display: flex;
+  gap: 16px;
+  margin-top: 0;
+  height: calc(100vh - 210px);
+  min-height: 560px;
+  background: #0b1220;
+  border: 1px solid #243044;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+.imgsentry-fm-tree-panel {
+  width: 280px;
+  min-width: 240px;
+  height: 100%;
+  min-height: 0;
+  background: #0f172a;
+  border-right: 1px solid #243044;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  transition: width 0.2s ease, min-width 0.2s ease, flex-basis 0.2s ease, opacity 0.15s ease;
+}
+
+.imgsentry-fm-tree-panel.collapsed {
+  width: 0 !important;
+  min-width: 0 !important;
+  flex-basis: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-right: none !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.imgsentry-fm-tree-header {
+  flex-shrink: 0;
+}
+
+.imgsentry-fm-tree-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.imgsentry-fm-workspace-panel {
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #0f172a;
+  min-width: 0;
+  position: relative;
+}
+
+.imgsentry-fm-toolbar {
+  position: relative;
+  z-index: 5 !important;
+  flex-shrink: 0;
+}
+
+.imgsentry-fm-toolbar-meta {
+  flex-shrink: 0;
+}
+
+.imgsentry-fm-table-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 0;
+}
+
+.imgsentry-fm-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.fm-dropdown-menu {
+  z-index: 10 !important;
+}
+
+/* WordPress admin-bar offsets for the React app.
+   WP core: bar = 32px; <=782px bar = 46px; <=600px the bar scrolls away (not fixed). */
+:root {
+  --imgsentry-adminbar-h: 32px;
+  --imgsentry-html-pad: 32px;
+}
+@media (max-width: 782px) {
+  :root {
+    --imgsentry-adminbar-h: 46px;
+    --imgsentry-html-pad: 46px;
+  }
+}
+@media (max-width: 600px) {
+  :root {
+    --imgsentry-adminbar-h: 0px;
+  }
+}
+html:not(.wp-toolbar) {
+  --imgsentry-adminbar-h: 0px;
+  --imgsentry-html-pad: 0px;
+}
+
+/* ==========================================================================
+   ImgSentry File Manager - Fullscreen Display Mode
+   Exclusively display plugin workspace: <main class="p-8 flex-1 space-y-6"><div class="imgsentry-fm-wrapper w-full">
+   Completely hide WordPress admin bar (top menu), admin sidebar (all side menu), footer, and notices.
+   ========================================================================== */
+
+/* 1. Prevent body scrolling in fullscreen */
+body.fm-body-fullscreen {
+  overflow: hidden !important;
+}
+
+/* 2. WordPress Admin Toolbar (Top Menu) Reset */
+html.wp-toolbar body.fm-body-fullscreen,
+body.fm-body-fullscreen {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body.fm-body-fullscreen #wpadminbar,
+body.fm-body-fullscreen #wpadminbar *,
+html.wp-toolbar body.fm-body-fullscreen #wpadminbar {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 3. WordPress Admin Sidebar (All Side Menu) Hide */
+body.fm-body-fullscreen #adminmenumain,
+body.fm-body-fullscreen #adminmenuwrap,
+body.fm-body-fullscreen #adminmenuback,
+body.fm-body-fullscreen #adminmenu,
+body.fm-body-fullscreen #collapse-menu,
+html.wp-toolbar body.fm-body-fullscreen #adminmenuwrap,
+html.wp-toolbar body.fm-body-fullscreen #adminmenuback {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 4. WordPress Admin Content & Wrapper Offsets Reset */
+body.fm-body-fullscreen #wpcontent,
+body.fm-body-fullscreen #wpbody,
+body.fm-body-fullscreen #wpbody-content,
+body.fm-body-fullscreen #wpfooter,
+body.fm-body-fullscreen #wpwrap,
+html.wp-toolbar body.fm-body-fullscreen #wpcontent {
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-left: 0 !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-height: 100vh !important;
+}
+
+body.fm-body-fullscreen #wpfooter {
+  display: none !important;
+}
+
+/* 5. Hide Top Plugin Header, Horizontal Navigation Tabs, & Notices */
+body.fm-body-fullscreen header,
+body.fm-body-fullscreen nav,
+body.fm-body-fullscreen .sticky,
+body.fm-body-fullscreen div.sticky,
+body.fm-body-fullscreen .imgsentry-header-card,
+body.fm-body-fullscreen .imgsentry-top-bar,
+body.fm-body-fullscreen .imgsentry-nav-bar,
+body.fm-body-fullscreen .imgsentry-header,
+body.fm-body-fullscreen .imgsentry-nav-tabs,
+body.fm-body-fullscreen #imgsentry-nav-tabs,
+body.fm-body-fullscreen .imgsentry-nav-tab-wrapper,
+body.fm-body-fullscreen .nav-tab-wrapper,
+body.fm-body-fullscreen #imgsentry-plugin-root > div > div.flex > div > div.sticky,
+body.fm-body-fullscreen main > *:not(.imgsentry-fm-wrapper):not(#imgsentry-fm-container) {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 6. Main Plugin Workspace Expansion */
+body.fm-body-fullscreen #imgsentry-plugin-root,
+body.fm-body-fullscreen #imgsentry-plugin-root > div,
+body.fm-body-fullscreen #imgsentry-plugin-root .wrap.imgsentry-wrap,
+body.fm-body-fullscreen .wrap.imgsentry-wrap {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  isolation: auto !important;
+  transform: none !important;
+  contain: none !important;
+}
+
+body.fm-body-fullscreen main,
+body.fm-body-fullscreen main.p-8,
+body.fm-body-fullscreen main.flex-1 {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 100% !important;
+}
+
+/* 7. Fullscreen File Manager Wrapper (<div class="imgsentry-fm-wrapper w-full">) */
+body.fm-body-fullscreen .imgsentry-fm-wrapper,
+.imgsentry-fm-wrapper.fm-is-fullscreen,
+.imgsentry-fm-wrap.fm-is-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: var(--fm-z-fullscreen, 100000000) !important;
+  background: #0f172a !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  isolation: auto !important;
+  transform: none !important;
+  contain: none !important;
+}
+
+/* 8. Fullscreen Container Inner Flex Expansion */
+body.fm-body-fullscreen #imgsentry-fm-container,
+.imgsentry-fm-wrapper.fm-is-fullscreen #imgsentry-fm-container,
+.imgsentry-fm-wrap.fm-is-fullscreen #imgsentry-fm-container {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+/* Fallback if direct container fullscreen */
+#imgsentry-fm-container.fm-is-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: var(--fm-z-fullscreen, 100000000) !important;
+  background: #0f172a !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  isolation: auto !important;
+  transform: none !important;
+  contain: none !important;
+}
+
+/* 9. Fullscreen Floating Exit Hint Overlay */
+.fm-fullscreen-hint {
+  position: fixed !important;
+  top: 16px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: var(--fm-z-fullscreen-hint, 100000200) !important;
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid #334155 !important;
+  border-radius: 9999px !important;
+  padding: 8px 20px !important;
+  color: #ffffff !important;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  animation: fmHintFadeIn 0.3s ease !important;
+  pointer-events: auto !important;
+  line-height: 1.5 !important;
+}
+
+.fm-fullscreen-hint strong {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+}
+
+.fm-fullscreen-hint.is-hiding {
+  opacity: 0 !important;
+  transform: translateX(-50%) translateY(-10px) !important;
+  transition: opacity 0.35s ease, transform 0.35s ease !important;
+}
+
+.fm-hint-close {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: none !important;
+  color: #cbd5e1 !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  transition: color 0.15s, background 0.15s !important;
+}
+
+.fm-hint-close:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+@keyframes fmHintFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ==========================================
+   Visual Media Thumbnails & PDF Styling
+   ========================================== */
+
+/* Grid / Icon View Container & Icon Box */
+.imgsentry-fm-icon-grid .fm-grid-icon {
+  width: 88px;
+  height: 88px;
+  margin-bottom: 8px;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.imgsentry-fm-icon-grid .fm-grid-icon .dashicons {
+  font-size: 38px;
+  width: 38px;
+  height: 38px;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imgsentry-fm-icon-grid .fm-grid-item[data-type="folder"] .fm-grid-icon {
+  color: #f59e0b;
+}
+
+/* List View Small Thumbnail */
+.imgsentry-fm-table .fm-file-thumb-list {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  flex-shrink: 0;
+}
+
+/* Icon / Grid View Large Thumbnail */
+.imgsentry-fm-icon-grid .fm-file-thumb-grid {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.imgsentry-fm-icon-grid .fm-grid-item:hover .fm-file-thumb-grid {
+  transform: scale(1.04);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================
+   Comprehensive File Type Color-Coded Icons
+   (cPanel / OS Explorer Style)
+   ========================================== */
+
+/* Folder */
+.imgsentry-fm-wrapper .fm-icon-folder,
+.imgsentry-fm-table .fm-icon-folder {
+  color: #f59e0b !important; /* Rich amber folder */
+}
+
+/* Documents */
+.imgsentry-fm-wrapper .fm-icon-pdf,
+.imgsentry-fm-table .fm-icon-pdf {
+  color: #ef4444 !important; /* Acrobat Red */
+}
+
+.imgsentry-fm-wrapper .fm-icon-doc,
+.imgsentry-fm-table .fm-icon-doc {
+  color: #3b82f6 !important; /* Word Blue */
+}
+
+.imgsentry-fm-wrapper .fm-icon-spreadsheet,
+.imgsentry-fm-table .fm-icon-spreadsheet {
+  color: #10b981 !important; /* Excel / Sheets Emerald Green */
+}
+
+.imgsentry-fm-wrapper .fm-icon-presentation,
+.imgsentry-fm-table .fm-icon-presentation {
+  color: #f97316 !important; /* PowerPoint Orange */
+}
+
+.imgsentry-fm-wrapper .fm-icon-text,
+.imgsentry-fm-table .fm-icon-text {
+  color: #94a3b8 !important; /* Slate / Notepad Text */
+}
+
+/* Code & Developer Files */
+.imgsentry-fm-wrapper .fm-icon-php,
+.imgsentry-fm-table .fm-icon-php {
+  color: #818cf8 !important; /* PHP Indigo / Purple */
+}
+
+.imgsentry-fm-wrapper .fm-icon-js,
+.imgsentry-fm-table .fm-icon-js {
+  color: #facc15 !important; /* JavaScript Warm Gold / Yellow */
+}
+
+.imgsentry-fm-wrapper .fm-icon-ts,
+.imgsentry-fm-table .fm-icon-ts {
+  color: #38bdf8 !important; /* TypeScript Sky Blue */
+}
+
+.imgsentry-fm-wrapper .fm-icon-css,
+.imgsentry-fm-table .fm-icon-css {
+  color: #38bdf8 !important; /* CSS3 Cyan / Blue */
+}
+
+.imgsentry-fm-wrapper .fm-icon-html,
+.imgsentry-fm-table .fm-icon-html {
+  color: #fb923c !important; /* HTML5 Vibrant Orange */
+}
+
+.imgsentry-fm-wrapper .fm-icon-json,
+.imgsentry-fm-table .fm-icon-json {
+  color: #a3e635 !important; /* JSON Lime Green */
+}
+
+.imgsentry-fm-wrapper .fm-icon-xml,
+.imgsentry-fm-table .fm-icon-xml {
+  color: #2dd4bf !important; /* XML Teal */
+}
+
+.imgsentry-fm-wrapper .fm-icon-sql,
+.imgsentry-fm-table .fm-icon-sql {
+  color: #06b6d4 !important; /* Database Cyan / Blue */
+}
+
+.imgsentry-fm-wrapper .fm-icon-python,
+.imgsentry-fm-table .fm-icon-python {
+  color: #38bdf8 !important; /* Python Blue */
+}
+
+.imgsentry-fm-wrapper .fm-icon-shell,
+.imgsentry-fm-table .fm-icon-shell {
+  color: #4ade80 !important; /* Terminal Green */
+}
+
+.imgsentry-fm-wrapper .fm-icon-config,
+.imgsentry-fm-table .fm-icon-config {
+  color: #e879f9 !important; /* Config / .env Fuchsia */
+}
+
+/* Archives & Packages */
+.imgsentry-fm-wrapper .fm-icon-archive,
+.imgsentry-fm-table .fm-icon-archive {
+  color: #fbbf24 !important; /* Zip / Tar Gold Amber */
+}
+
+/* Media: Audio & Video */
+.imgsentry-fm-wrapper .fm-icon-audio,
+.imgsentry-fm-table .fm-icon-audio {
+  color: #c084fc !important; /* Audio Violet / Purple */
+}
+
+.imgsentry-fm-wrapper .fm-icon-video,
+.imgsentry-fm-table .fm-icon-video {
+  color: #f43f5e !important; /* Video Rose / Crimson */
+}
+
+/* Images & Vectors */
+.imgsentry-fm-wrapper .fm-icon-svg,
+.imgsentry-fm-table .fm-icon-svg {
+  color: #fb7185 !important; /* SVG Vector Coral */
+}
+
+.imgsentry-fm-wrapper .fm-icon-image,
+.imgsentry-fm-table .fm-icon-image {
+  color: #ec4899 !important; /* Image Pink */
+}
+
+/* Fonts */
+.imgsentry-fm-wrapper .fm-icon-font,
+.imgsentry-fm-table .fm-icon-font {
+  color: #a78bfa !important; /* Font Purple */
+}
+
+/* Generic / Unknown */
+.imgsentry-fm-wrapper .fm-icon-generic,
+.imgsentry-fm-table .fm-icon-generic {
+  color: #64748b !important; /* Slate Blue */
+}
+
+/* ==========================================
+   Image Preview Dialog / Popup Box
+   ========================================== */
+
+.imgsentry-fm-lightbox-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(5, 9, 18, 0.82);
+  backdrop-filter: blur(8px);
+  z-index: var(--fm-z-modal-backdrop, 100000100) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fmFadeIn 0.2s ease forwards;
+  user-select: none;
+}
+
+.imgsentry-fm-lightbox-dialog {
+  width: 92vw;
+  max-width: 960px;
+  height: 84vh;
+  max-height: 720px;
+  min-height: 480px;
+  background: #0B111E;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  animation: fmSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.imgsentry-fm-lightbox-header {
+  padding: 20px 24px 16px 24px;
+  background: #0D1527;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  color: #f8fafc;
+  flex-shrink: 0;
+}
+
+.imgsentry-fm-lightbox-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.imgsentry-fm-lightbox-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.imgsentry-fm-lightbox-icon {
+  font-size: 22px !important;
+  width: 22px !important;
+  height: 22px !important;
+  line-height: 22px !important;
+  color: #38bdf8;
+}
+
+.imgsentry-fm-lightbox-main-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.imgsentry-fm-lightbox-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Unified 32px Icon-Only Action Buttons (Zoom Toggle, Download, Close) */
+.imgsentry-fm-lightbox-btn {
+  background: #1B283D;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.imgsentry-fm-lightbox-btn:hover:not(:disabled) {
+  background: #2563eb;
+  border-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+.imgsentry-fm-lightbox-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Zoom Toggle Active (150% Zoomed) State */
+.imgsentry-fm-lightbox-zoom-toggle.active {
+  background: #2563eb;
+  border-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+}
+
+.imgsentry-fm-lightbox-btn .imgsentry-fm-icon,
+.imgsentry-fm-lightbox-btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  pointer-events: none;
+}
+
+.imgsentry-fm-lightbox-btn .dashicons {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  line-height: 16px !important;
+}
+
+/* Close Button Override */
+.imgsentry-fm-lightbox-close:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #f87171 !important;
+  box-shadow: none !important;
+}
+
+/* Sub-header Metadata Line */
+.imgsentry-fm-lightbox-subhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.imgsentry-fm-lightbox-subicon {
+  font-size: 15px !important;
+  width: 15px !important;
+  height: 15px !important;
+  line-height: 15px !important;
+  color: #64748b;
+}
+
+.imgsentry-fm-lightbox-filename {
+  color: #cbd5e1;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+}
+
+.imgsentry-fm-lightbox-divider {
+  color: #334155;
+  font-weight: 300;
+}
+
+.imgsentry-fm-lightbox-size {
+  color: #94a3b8;
+}
+
+.imgsentry-fm-lightbox-bullet {
+  color: #475569;
+}
+
+.imgsentry-fm-lightbox-res {
+  color: #94a3b8;
+}
+
+/* Modal Body / Image Stage */
+.imgsentry-fm-lightbox-body {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 64px;
+  overflow: hidden;
+  background: #080D1A;
+}
+
+.imgsentry-fm-lightbox-img-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.imgsentry-fm-lightbox-img-wrapper.is-zoomed {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imgsentry-fm-lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65);
+  transition: opacity 0.15s ease, transform 0.2s ease-out;
+}
+
+/* Stage Circular Navigation Arrows */
+.imgsentry-fm-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(27, 40, 61, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.imgsentry-fm-lightbox-nav:hover:not(:disabled):not(.disabled) {
+  background: #2563eb;
+  border-color: #3b82f6;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.imgsentry-fm-lightbox-nav:disabled,
+.imgsentry-fm-lightbox-nav.disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.imgsentry-fm-lightbox-prev {
+  left: 20px;
+}
+
+.imgsentry-fm-lightbox-next {
+  right: 20px;
+}
+
+/* Modal Footer / Bottom Pagination */
+.imgsentry-fm-lightbox-footer {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #0D1527;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.imgsentry-fm-lightbox-foot-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.imgsentry-fm-lightbox-foot-btn:hover:not(:disabled):not(.disabled) {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.imgsentry-fm-lightbox-foot-btn:disabled,
+.imgsentry-fm-lightbox-foot-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.imgsentry-fm-lightbox-counter {
+  color: #cbd5e1;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* -------------------------------------------------------------
+ * Activity Log Viewer & Centered Modal Dialog Styles
+ * ------------------------------------------------------------- */
+.fm-activity-log-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(5, 9, 18, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: var(--fm-z-modal-backdrop, 100000100) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.fm-activity-log-drawer.open {
+  pointer-events: auto;
+  visibility: visible;
+  opacity: 1;
+}
+
+.fm-activity-log-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.fm-activity-log-panel {
+  position: relative;
+  width: 900px;
+  max-width: 92vw;
+  height: 84vh;
+  max-height: 720px;
+  min-height: 460px;
+  z-index: 2;
+  background: #0B111E;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.fm-activity-log-drawer.open .fm-activity-log-panel {
+  transform: scale(1);
+}
+
+.fm-activity-log-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #0B111E;
+  color: #e2e8f0;
+  overflow: hidden;
+}
+
+.fm-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  background: #0D1527;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.fm-log-header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fm-log-header-title .dashicons {
+  color: #10b981;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.fm-log-header-title h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.fm-log-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fm-log-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  background: #0F172A;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.fm-log-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+.fm-log-filter-group label {
+  font-weight: 500;
+  color: #cbd5e1;
+}
+
+.imgsentry-fm-wrapper select.fm-select,
+.imgsentry-fm-wrapper select.fm-log-select,
+.fm-log-filters .fm-select,
+.fm-log-filters .fm-input {
+  background-color: #0B111E !important;
+  border: 1px solid #334155 !important;
+  color: #f8fafc !important;
+  font-size: 12.5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  outline: none;
+  color-scheme: dark;
+}
+
+.imgsentry-fm-wrapper select.fm-select option,
+.imgsentry-fm-wrapper select.fm-log-select option,
+.fm-log-filters .fm-select option {
+  background-color: #0B111E !important;
+  color: #f8fafc !important;
+}
+
+.fm-log-filters .fm-input-date {
+  color-scheme: dark;
+}
+
+.fm-log-filters .fm-select:focus,
+.fm-log-filters .fm-input:focus {
+  border-color: #10b981 !important;
+}
+
+.fm-log-search-group {
+  flex: 1;
+  min-width: 200px;
+  justify-content: flex-end;
+}
+
+.fm-log-search-group .fm-input {
+  width: 100%;
+  max-width: 280px;
+}
+
+.fm-log-table-container {
+  flex: 1;
+  overflow: auto;
+  background: #0B111E;
+}
+
+.fm-log-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.fm-log-table thead {
+  position: sticky;
+  top: 0;
+  background: #131d31;
+  z-index: 2;
+}
+
+.fm-log-table th {
+  padding: 8px 14px;
+  color: #94a3b8;
+  font-weight: 600;
+  border-bottom: 1px solid #1e293b;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.fm-log-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #162032;
+  color: #cbd5e1;
+  vertical-align: middle;
+}
+
+.fm-log-table tbody tr:hover {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.fm-log-col-time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 11.5px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.fm-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #1e293b;
+  color: #cbd5e1;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.fm-user-pill .dashicons {
+  font-size: 13px;
+  width: 13px;
+  height: 13px;
+  color: #64748b;
+}
+
+.fm-log-col-path {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fm-log-col-path code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 11.5px;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.fm-badge {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.fm-badge-folder { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+.fm-badge-file { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.fm-badge-upload { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+.fm-badge-download { background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
+.fm-badge-delete { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.fm-badge-rename { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.fm-badge-move { background: rgba(217, 70, 239, 0.15); color: #e879f9; border: 1px solid rgba(217, 70, 239, 0.3); }
+.fm-badge-copy { background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+.fm-badge-edit { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+.fm-badge-zip { background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }
+.fm-badge-default { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+.fm-badge-success { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+.fm-badge-error { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+
+.fm-log-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  background: #0f172a;
+  border-top: 1px solid #1e293b;
+  font-size: 12px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.fm-log-pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Cut / Scissors icon */
+.dashicons.dashicons-editor-cut,
+.dashicons-editor-cut {
+  font-family: inherit !important;
+  speak: never;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  position: relative;
+  width: 1em;
+  height: 1em;
+  min-width: 1em;
+  min-height: 1em;
+  box-sizing: border-box;
+}
+
+.dashicons.dashicons-editor-cut::before,
+.dashicons-editor-cut::before {
+  content: "" !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: currentColor !important;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13-1.14-.36-1.64L12 14l7 7h3v-1L9.64 7.64zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm6-7.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zM19 3l-6 6 2 2 7-7V3h-3z'/%3E%3C/svg%3E") no-repeat center / contain !important;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M9.64 7.64c.23-.5.36-1.05.36-1.64 0-2.21-1.79-4-4-4S2 3.79 2 6s1.79 4 4 4c.59 0 1.14-.13 1.64-.36L10 12l-2.36 2.36C7.14 14.13 6.59 14 6 14c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4c0-.59-.13-1.14-.36-1.64L12 14l7 7h3v-1L9.64 7.64zM6 8c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm0 12c-1.1 0-2-.89-2-2s.9-2 2-2 2 .89 2 2-.9 2-2 2zm6-7.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zM19 3l-6 6 2 2 7-7V3h-3z'/%3E%3C/svg%3E") no-repeat center / contain !important;
+}
+
+/* Context Menu & Global Overlays Stacking */
+.imgsentry-fm-context-menu {
+  position: fixed;
+  z-index: var(--fm-z-context-menu, 100000300) !important;
+  pointer-events: auto !important;
+}
+
+.fm-cm-submenu {
+  z-index: var(--fm-z-context-submenu, 100000350) !important;
+}
+
+.imgsentry-fm-toast-container {
+  z-index: var(--fm-z-toast, 100000400) !important;
+}
+
+.imgsentry-fm-toast {
+  pointer-events: auto;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 280px;
+  max-width: 420px;
+}
+
+.imgsentry-fm-toast .imgsentry-fm-toast-msg {
+  color: #f8fafc;
+}
+
+.imgsentry-fm-toast.imgsentry-fm-type-success,
+.imgsentry-fm-toast.imgsentry-fm-toast-success { border-left: 4px solid #10b981; background: #1e293b; color: #f8fafc; }
+
+.imgsentry-fm-toast.imgsentry-fm-type-error,
+.imgsentry-fm-toast.imgsentry-fm-toast-error,
+.imgsentry-fm-toast.imgsentry-fm-type-failed { border-left: 4px solid #ef4444; background: #1e293b; color: #f8fafc; }
+
+.imgsentry-fm-toast.imgsentry-fm-type-info,
+.imgsentry-fm-toast.imgsentry-fm-toast-info { border-left: 4px solid #38bdf8; background: #1e293b; color: #f8fafc; }
+
+.imgsentry-fm-toast.imgsentry-fm-type-warning,
+.imgsentry-fm-toast.imgsentry-fm-toast-warning { border-left: 4px solid #f59e0b; background: #1e293b; color: #f8fafc; }
+
+.imgsentry-fm-toast.imgsentry-fm-type-error .dashicons,
+.imgsentry-fm-toast.imgsentry-fm-toast-error .dashicons { color: #ef4444; }
+.imgsentry-fm-toast.imgsentry-fm-type-success .dashicons,
+.imgsentry-fm-toast.imgsentry-fm-toast-success .dashicons { color: #10b981; }
+.imgsentry-fm-toast.imgsentry-fm-type-info .dashicons,
+.imgsentry-fm-toast.imgsentry-fm-toast-info .dashicons { color: #38bdf8; }
+.imgsentry-fm-toast.imgsentry-fm-type-warning .dashicons,
+.imgsentry-fm-toast.imgsentry-fm-toast-warning .dashicons { color: #f59e0b; }
+
+.imgsentry-fm-modal-backdrop,
+.imgsentry-fm-editor-overlay {
+  z-index: var(--fm-z-modal-backdrop, 100000100) !important;
+}
+
+/* Redesigned Create Zip Archive Modal Dialog */
+.imgsentry-fm-modal-dialog.fm-dialog-create-zip {
+  max-width: 480px !important;
+  width: 100% !important;
+  background: #0f1118 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45) !important;
+  overflow: hidden !important;
+  color: #ffffff !important;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: 90vh !important;
+}
+
+.fm-dialog-create-zip .imgsentry-fm-modal-header {
+  padding: 18px 24px !important;
+  background: #111421 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-shrink: 0 !important;
+}
+
+.fm-dialog-create-zip .imgsentry-fm-modal-body {
+  padding: 26px 24px !important;
+  background: #0f1118 !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  max-height: none !important;
+}
+
+.fm-dialog-create-zip .imgsentry-fm-modal-footer {
+  padding: 16px 24px !important;
+  background: rgba(17, 20, 33, 0.9) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  flex-shrink: 0 !important;
+}
+
+.fm-dialog-create-zip .fm-zip-input:focus,
+.fm-dialog-create-zip #fm-modal-input:focus {
+  border-color: #A61E69 !important;
+  box-shadow: 0 0 0 2px rgba(166, 30, 105, 0.25) !important;
+  outline: none !important;
+}
+
+/* Floating "Search Everywhere" Pill */
+.fm-search-pill {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  background: #0f172a;
+  border: 1px solid #10b981;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(16, 185, 129, 0.25);
+  color: #e2e8f0;
+  font-size: 11.5px;
+  padding: 6px 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.fm-search-pill:hover {
+  background: #1e293b;
+  color: #34d399;
+  border-color: #34d399;
+}
+
+.fm-search-pill kbd {
+  background: #334155;
+  color: #f8fafc;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+}
+
+.fm-search-pill .fm-search-pill-action {
+  color: #10b981;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+/* Search Banner Bar */
+.fm-search-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0b1329;
+  border: 1px solid #1e3a5f;
+  border-radius: 8px;
+  padding: 9px 16px;
+  margin: 8px 16px 12px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  gap: 12px;
+}
+
+.fm-search-banner-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #cbd5e1;
+}
+
+.fm-search-banner-icon {
+  color: #10b981;
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+}
+
+.fm-search-banner-title {
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.fm-search-scope-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.fm-search-type-badge {
+  background: #047857;
+  color: #ecfdf5;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.fm-search-count-pill {
+  background: #0f766e;
+  color: #ccfbf1;
+  border-radius: 12px;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.fm-search-banner-truncated {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #78350f;
+  color: #fef3c7;
+  border: 1px solid #b45309;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.fm-search-banner-truncated .dashicons {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.fm-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #1e293b;
+  color: #f1f5f9;
+  border: 1px solid #475569;
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.fm-banner-btn:hover {
+  background: #334155;
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+/* Containing Folder Path Display in Search Rows */
+.fm-search-result-path {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fm-search-result-path .dashicons {
+  font-size: 12px;
+  width: 12px;
+  height: 12px;
+  color: #475569;
+}
+
+/* Containing Folder in Icon Grid */
+.fm-grid-location {
+  font-size: 10px;
+  color: #64748b;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  margin-top: 2px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Pulse Highlight on Navigated Row/Item */
+.fm-row-highlight {
+  animation: fmPulseHighlight 2.5s ease-out;
+}
+
+@keyframes fmPulseHighlight {
+  0% {
+    background-color: rgba(16, 185, 129, 0.45) !important;
+  }
+  40% {
+    background-color: rgba(16, 185, 129, 0.25) !important;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Search Loading Spinner */
+.fm-search-spinner {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto;
+  border: 3px solid #1e293b;
+  border-top: 3px solid #10b981;
+  border-radius: 50%;
+  animation: fmSpin 0.9s linear infinite;
+}
+
+@keyframes fmSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Background Job Non-Blocking Floating Widget Styles */
+.fm-job-widget-container {
+  position: fixed;
+  top: 70px;
+  right: 24px;
+  z-index: var(--fm-z-toast, 100000400);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 380px;
+  width: calc(100vw - 48px);
+  pointer-events: none;
+}
+
+.fm-job-card {
+  pointer-events: auto;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  color: #f8fafc;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  animation: fmJobSlideDown 0.25s ease-out;
+}
+
+@keyframes fmJobSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fm-job-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid #1e293b;
+  background: #1e293b;
+  gap: 8px;
+}
+
+.fm-job-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.fm-job-card-icon {
+  color: #c084fc;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fm-job-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fm-job-card-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.fm-job-btn-icon {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.fm-job-btn-icon:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fm-job-btn-icon .dashicons {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.fm-job-card-body {
+  padding: 12px 14px;
+  transition: all 0.2s ease;
+}
+
+.fm-job-status-line {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Thin progress bar */
+.fm-job-progress-track {
+  width: 100%;
+  height: 4px;
+  background: #334155;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.fm-job-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #A61E69, #C13D8B);
+  border-radius: 9999px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.fm-job-footer-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11.5px;
+}
+
+.fm-job-items-count {
+  color: #cbd5e1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.fm-job-percentage {
+  color: #f1f5f9;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+/* Action button area inside card on completion */
+.fm-job-action-wrap {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #1e293b;
+  text-align: right;
+}
+
+.fm-job-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #10b981;
+  color: #ffffff !important;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.fm-job-download-btn:hover {
+  background: #059669;
+}
+
+.fm-job-download-btn .dashicons {
+  font-size: 13px;
+  width: 13px;
+  height: 13px;
+}
+
+/* Minimized Pill Mode */
+.fm-job-card.is-minimized {
+  border-radius: 9999px;
+  background: #0f172a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.fm-job-card.is-minimized .fm-job-card-header {
+  border-bottom: none;
+  border-radius: 9999px;
+  padding: 6px 12px;
+  background: transparent;
+}
+
+.fm-job-card.is-minimized .fm-job-card-body {
+  display: none;
+}
+
+.fm-job-pill-pct {
+  display: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #c084fc;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  margin-left: 4px;
+}
+
+.fm-job-card.is-minimized .fm-job-pill-pct {
+  display: inline-block;
+}
+
+/* Success / Error card themes */
+.fm-job-card.is-success .fm-job-card-icon {
+  color: #10b981;
+}
+
+.fm-job-card.is-success .fm-job-progress-fill {
+  background: #10b981;
+}
+
+.fm-job-card.is-error {
+  border-color: #7f1d1d;
+}
+
+.fm-job-card.is-error .fm-job-card-icon {
+  color: #ef4444;
+}
+
+.fm-job-card.is-error .fm-job-progress-fill {
+  background: #ef4444;
+}
+
+.fm-job-card.is-poll-warning {
+  border-color: #b45309;
+}
+
+.fm-job-card.is-poll-warning .fm-job-status-line {
+  color: #f59e0b;
+}
+
+.fm-job-retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #3b82f6;
+  color: #ffffff !important;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.fm-job-retry-btn:hover {
+  background: #2563eb;
+}
+
+.fm-job-retry-btn .dashicons {
+  font-size: 13px;
+  width: 13px;
+  height: 13px;
+}
+
+.fm-job-dismiss-btn {
+  display: inline-flex;
+  align-items: center;
+  background: #334155;
+  color: #e2e8f0 !important;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.fm-job-dismiss-btn:hover {
+  background: #475569;
+}
+
+.imgsentry-fm-modal-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Custom Styles for Buttons inside standard File Manager Modals */
+.imgsentry-fm-modal-footer button,
+.imgsentry-fm-modal-footer .button {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  padding: 8px 18px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  width: 100% !important;
+  white-space: normal !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+/* Cancel Button: Outline Primary Color */
+.imgsentry-fm-modal-footer .fm-modal-cancel,
+.imgsentry-fm-modal-footer .button-secondary {
+  background: transparent !important;
+  border: 1px solid #A61E69 !important;
+  color: #A61E69 !important;
+}
+
+.imgsentry-fm-modal-footer .fm-modal-cancel:hover,
+.imgsentry-fm-modal-footer .button-secondary:hover {
+  background: rgba(166, 30, 105, 0.08) !important;
+  color: #A61E69 !important;
+  border-color: #A61E69 !important;
+}
+
+/* Confirm / Empty Folder / Primary Actions: Solid Primary Color */
+.imgsentry-fm-modal-footer .fm-modal-confirm,
+.imgsentry-fm-modal-footer .button-primary,
+.imgsentry-fm-modal-footer .button-link-delete,
+.imgsentry-fm-modal-footer .fm-btn-danger {
+  background: #A61E69 !important;
+  border: 1px solid #A61E69 !important;
+  color: #ffffff !important;
+}
+
+.imgsentry-fm-modal-footer .fm-modal-confirm:hover,
+.imgsentry-fm-modal-footer .button-primary:hover,
+.imgsentry-fm-modal-footer .button-link-delete:hover,
+.imgsentry-fm-modal-footer .fm-btn-danger:hover {
+  background: #901659 !important;
+  border-color: #901659 !important;
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Comprehensive Form & Input Specificity Isolation against WP-Admin Core
+   Applies to all inputs, selects, textareas across Settings, Modals, and Cards
+   ========================================================================== */
+
+/* 1. General Inputs (text, number, search, password, email, url) */
+.imgsentry-fm-settings input[type="text"]:not([type="checkbox"]):not([type="radio"]),
+.imgsentry-fm-settings input[type="number"],
+.imgsentry-fm-settings input[type="search"],
+.imgsentry-fm-settings input[type="email"],
+.imgsentry-fm-settings input[type="password"],
+.imgsentry-fm-settings input[type="url"],
+.imgsentry-fm-folder-browser-modal input[type="text"],
+.imgsentry-folder-browser-modal input[type="text"],
+.imgsentry-fm-modal input[type="text"],
+.imgsentry-fm-modal input[type="number"],
+#imgsentry-plugin-root input[type="text"]:not([type="checkbox"]):not([type="radio"]),
+#imgsentry-plugin-root input[type="number"],
+#imgsentry-plugin-root input[type="search"],
+#imgsentry-plugin-root input[type="email"],
+#imgsentry-plugin-root input[type="password"],
+#imgsentry-plugin-root input[type="url"] {
+  box-sizing: border-box !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: #e2e8f0 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 8px !important;
+  line-height: 1.4 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  vertical-align: middle !important;
+  max-width: 100% !important;
+}
+
+/* Input Focus */
+.imgsentry-fm-settings input:focus,
+.imgsentry-fm-folder-browser-modal input:focus,
+.imgsentry-folder-browser-modal input:focus,
+.imgsentry-fm-modal input:focus,
+#imgsentry-plugin-root input:focus {
+  border-color: #A61E69 !important;
+  box-shadow: 0 0 0 1px #A61E69 !important;
+  outline: none !important;
+}
+
+/* Dark mode Inputs */
+.dark .imgsentry-fm-settings input[type="text"],
+.dark .imgsentry-fm-settings input[type="number"],
+.dark .imgsentry-fm-settings input[type="search"],
+.dark .imgsentry-fm-settings input[type="email"],
+.dark .imgsentry-fm-settings input[type="password"],
+.dark .imgsentry-fm-settings input[type="url"],
+.dark .imgsentry-fm-folder-browser-modal input,
+.dark .imgsentry-folder-browser-modal input,
+.dark .imgsentry-fm-modal input,
+.dark #imgsentry-plugin-root input[type="text"],
+.dark #imgsentry-plugin-root input[type="number"],
+.dark #imgsentry-plugin-root input[type="search"],
+.dark #imgsentry-plugin-root input[type="email"],
+.dark #imgsentry-plugin-root input[type="password"],
+.dark #imgsentry-plugin-root input[type="url"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.dark .imgsentry-fm-settings input:focus,
+.dark .imgsentry-fm-folder-browser-modal input:focus,
+.dark .imgsentry-folder-browser-modal input:focus,
+.dark .imgsentry-fm-modal input:focus,
+.dark #imgsentry-plugin-root input:focus {
+  border-color: #A61E69 !important;
+  box-shadow: 0 0 0 1px #A61E69 !important;
+}
+
+/* 2. Select Dropdowns */
+.imgsentry-fm-settings select,
+.imgsentry-fm-modal select,
+#imgsentry-plugin-root select {
+  box-sizing: border-box !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: #e2e8f0 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 8px !important;
+  padding: 6px 28px 6px 10px !important;
+  line-height: 1.4 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  cursor: pointer !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.imgsentry-fm-settings select:focus,
+.imgsentry-fm-modal select:focus,
+#imgsentry-plugin-root select:focus {
+  border-color: #A61E69 !important;
+  box-shadow: 0 0 0 1px #A61E69 !important;
+  outline: none !important;
+}
+
+.dark .imgsentry-fm-settings select,
+.dark .imgsentry-fm-modal select,
+.dark #imgsentry-plugin-root select {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+/* 3. Textarea Fields (e.g. Welcome Message, Exclusions) */
+.imgsentry-fm-settings textarea,
+.imgsentry-fm-modal textarea,
+#imgsentry-plugin-root textarea {
+  box-sizing: border-box !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: #e2e8f0 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  line-height: 1.5 !important; /* Defeats WP line-height: 2 */
+  box-shadow: none !important;
+  outline: none !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.imgsentry-fm-settings textarea:focus,
+.imgsentry-fm-modal textarea:focus,
+#imgsentry-plugin-root textarea:focus {
+  border-color: #A61E69 !important;
+  box-shadow: 0 0 0 1px #A61E69 !important;
+  outline: none !important;
+}
+
+.dark .imgsentry-fm-settings textarea,
+.dark .imgsentry-fm-modal textarea,
+.dark #imgsentry-plugin-root textarea {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+/* 4. Filter Folders & Search Inputs with Leading Icon */
+.imgsentry-fm-folder-browser-modal .fm-folder-filter-wrap,
+.imgsentry-folder-browser-modal .fm-folder-filter-wrap,
+#imgsentry-plugin-root .fm-folder-filter-wrap {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 32px !important;
+  width: 100% !important;
+  max-width: 320px !important;
+}
+
+.imgsentry-fm-folder-browser-modal .fm-folder-filter-icon-slot,
+.imgsentry-folder-browser-modal .fm-folder-filter-icon-slot,
+#imgsentry-plugin-root .fm-folder-filter-icon-slot {
+  position: absolute !important;
+  left: 10px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+
+.imgsentry-fm-folder-browser-modal .fm-folder-filter-icon,
+.imgsentry-folder-browser-modal .fm-folder-filter-icon,
+#imgsentry-plugin-root .fm-folder-filter-icon {
+  width: 14px !important;
+  height: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  pointer-events: none !important;
+  color: #94a3b8 !important;
+}
+
+.imgsentry-fm-folder-browser-modal input.fm-folder-filter-input,
+.imgsentry-folder-browser-modal input.fm-folder-filter-input,
+#imgsentry-plugin-root input.fm-folder-filter-input {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 12px 0 32px !important;
+  font-size: 12px !important;
+  margin: 0 !important;
+  vertical-align: middle !important;
+}
+
+/* Custom directory path inputs (monospace) */
+.imgsentry-fm-folder-browser-modal input.fm-folder-custom-input,
+.imgsentry-folder-browser-modal input.fm-folder-custom-input,
+#imgsentry-plugin-root input.fm-folder-custom-input {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+}
+
+.dark { color-scheme: dark; }   /* native select popups, date/time pickers, scrollbars become dark */
+.dark #imgsentry-plugin-root input[type="time"],
+.dark #imgsentry-plugin-root input[type="date"],
+.dark #imgsentry-plugin-root input[type="datetime-local"],
+.dark #imgsentry-plugin-root input[type="tel"],
+.dark #imgsentry-plugin-root input:not([type]) {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+
+
+
+/* ==========================================================================
+   Dark mode fixes (inputs + select arrows)
+   - The light rule for type="text" uses :not() chains, so it has more weight
+     than the dark rule above. This block repeats the chain with body.dark so
+     dark wins. File Manager (.imgsentry-fm-wrapper) is left alone.
+   ========================================================================== */
+body.dark #imgsentry-plugin-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="hidden"]):not(.imgsentry-fm-wrapper *) {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+body.dark #imgsentry-plugin-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="hidden"]):not(.imgsentry-fm-wrapper *)::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+body.dark #imgsentry-plugin-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="hidden"]):not(.imgsentry-fm-wrapper *):focus {
+  border-color: #A61E69 !important;
+  box-shadow: 0 0 0 1px #A61E69 !important;
+}
+
+/* WP core draws a dark select arrow; in dark mode swap it for a light one. */
+body.dark #imgsentry-plugin-root select:not(.appearance-none):not(.imgsentry-fm-wrapper *) {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23cbd5e1%22%2F%3E%3C%2Fsvg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 6px top 55% !important;
+  background-size: 16px 16px !important;
+}
+
+/* ==========================================================================
+   Scheduled Actions page (Settings > Scheduled Actions)
+   WordPress core admin CSS is not wrapped in a cascade layer, so it beats Tailwind utilities on a live
+   site (".wrap h1" padding/size/weight, input[type=text] padding). These rules restore the intended look.
+   ========================================================================== */
+
+/* Page title + the clock icon in front of it */
+#imgsentry-plugin-root h1.imgsentry-sa-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em !important;
+}
+
+#imgsentry-plugin-root h1.imgsentry-sa-title > svg.imgsentry-sa-title-icon {
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+  flex: 0 0 24px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#imgsentry-plugin-root h1.imgsentry-sa-title > span {
+  display: block !important;
+  line-height: 1.25 !important;
+}
+
+/* Search box: icon sits inside the field, text starts after it */
+#imgsentry-plugin-root .imgsentry-sa-search-wrap {
+  position: relative !important;
+  display: block !important;
+  flex: 0 1 auto !important;
+  max-width: 100% !important;
+}
+
+#imgsentry-plugin-root .imgsentry-sa-search-wrap input[type="text"].imgsentry-sa-search {
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 256px !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 6px 12px 6px 36px !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+}
+
+#imgsentry-plugin-root .imgsentry-sa-search-wrap > svg.imgsentry-sa-search-icon {
+  position: absolute !important;
+  left: 12px !important;
+  top: 50% !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  translate: 0 -50% !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 640px) {
+  #imgsentry-plugin-root .imgsentry-sa-search-wrap input[type="text"].imgsentry-sa-search {
+    width: 190px !important;
+  }
+}

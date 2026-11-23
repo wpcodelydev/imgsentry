@@ -1,0 +1,491 @@
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ImgSentry is licensed under the GNU General Public License v3.0 or later. The third-party
+components below are included in the plugin and keep their own licenses. All of them are
+compatible with GPL-3.0-or-later. Where a package offers a choice of licenses, ImgSentry
+uses it under the GPL-compatible option: dompurify under Apache-2.0 and rgbcolor under MIT.
+
+==============================================================================
+A. JavaScript and CSS packages compiled into build/assets/
+==============================================================================
+
+Package Name: @babel/runtime
+Version: 7.29.10
+License: MIT
+Copyright: Copyright (c) 2014-present Sebastian McKenzie and other contributors
+Repository: https://github.com/babel/babel
+Bundled in: build/assets/index.es.js, build/assets/plugin.js
+
+Package Name: @floating-ui/core
+Version: 1.8.0
+License: MIT
+Copyright: Copyright (c) 2021-present Floating UI contributors
+Repository: https://github.com/floating-ui/floating-ui
+Bundled in: build/assets/plugin.js
+
+Package Name: @floating-ui/dom
+Version: 1.8.0
+License: MIT
+Copyright: Copyright (c) 2021-present Floating UI contributors
+Repository: https://github.com/floating-ui/floating-ui
+Bundled in: build/assets/plugin.js
+
+Package Name: @floating-ui/react
+Version: 0.27.20
+License: MIT
+Copyright: Copyright (c) 2021-present Floating UI contributors
+Repository: https://github.com/floating-ui/floating-ui
+Bundled in: build/assets/plugin.js
+
+Package Name: @floating-ui/react-dom
+Version: 2.1.9
+License: MIT
+Copyright: Copyright (c) 2021-present Floating UI contributors
+Repository: https://github.com/floating-ui/floating-ui
+Bundled in: build/assets/plugin.js
+
+Package Name: @floating-ui/utils
+Version: 0.2.12
+License: MIT
+Copyright: Copyright (c) 2021-present Floating UI contributors
+Repository: https://github.com/floating-ui/floating-ui
+Bundled in: build/assets/plugin.js
+
+Package Name: @reduxjs/toolkit
+Version: 2.13.0
+License: MIT
+Copyright: Copyright (c) 2018 Mark Erikson
+Repository: https://github.com/reduxjs/redux-toolkit
+Bundled in: build/assets/plugin.js
+
+Package Name: base64-arraybuffer
+Version: 1.0.2
+License: MIT
+Copyright: Copyright holder and notice are in the LICENSE file shipped with the package on npm
+Repository: https://www.npmjs.com/package/base64-arraybuffer
+Bundled in: build/assets/plugin.js, build/assets/html2canvas.esm.js
+
+Package Name: canvg
+Version: 3.0.11
+License: MIT
+Copyright: Copyright (c) 2010 - present Gabe Lerner (gabelerner@gmail.com) - https://github.com/canvg/canvg
+Repository: https://github.com/canvg/canvg
+Bundled in: build/assets/index.es.js
+
+Package Name: clsx
+Version: 2.1.1
+License: MIT
+Copyright: Copyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)
+Repository: https://github.com/lukeed/clsx
+Bundled in: build/assets/plugin.js
+
+Package Name: core-js
+Version: 3.50.0
+License: MIT
+Copyright: Copyright (c) 2013–2025 Denis Pushkarev (zloirock.ru)
+Repository: https://github.com/zloirock/core-js
+Bundled in: build/assets/index.es.js
+
+Package Name: css-line-break
+Version: 2.1.0
+License: MIT
+Copyright: Copyright holder and notice are in the LICENSE file shipped with the package on npm
+Repository: https://www.npmjs.com/package/css-line-break
+Bundled in: build/assets/plugin.js, build/assets/html2canvas.esm.js
+
+Package Name: d3-array
+Version: 3.2.4
+License: ISC
+Copyright: Copyright 2010-2023 Mike Bostock
+Repository: https://github.com/d3/d3-array
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-color
+Version: 3.1.0
+License: ISC
+Copyright: Copyright 2010-2022 Mike Bostock
+Repository: https://github.com/d3/d3-color
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-format
+Version: 3.1.2
+License: ISC
+Copyright: Copyright 2010-2026 Mike Bostock
+Repository: https://github.com/d3/d3-format
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-interpolate
+Version: 3.0.1
+License: ISC
+Copyright: Copyright 2010-2021 Mike Bostock
+Repository: https://github.com/d3/d3-interpolate
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-path
+Version: 3.1.0
+License: ISC
+Copyright: Copyright 2015-2022 Mike Bostock
+Repository: https://github.com/d3/d3-path
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-scale
+Version: 4.0.2
+License: ISC
+Copyright: Copyright 2010-2021 Mike Bostock
+Repository: https://github.com/d3/d3-scale
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-shape
+Version: 3.2.0
+License: ISC
+Copyright: Copyright 2010-2022 Mike Bostock
+Repository: https://github.com/d3/d3-shape
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-time
+Version: 3.1.0
+License: ISC
+Copyright: Copyright 2010-2022 Mike Bostock
+Repository: https://github.com/d3/d3-time
+Bundled in: build/assets/plugin.js
+
+Package Name: d3-time-format
+Version: 4.1.0
+License: ISC
+Copyright: Copyright 2010-2021 Mike Bostock
+Repository: https://github.com/d3/d3-time-format
+Bundled in: build/assets/plugin.js
+
+Package Name: date-fns
+Version: 4.4.0
+License: MIT
+Copyright: Copyright (c) 2021 Sasha Koss and Lesha Koss https://kossnocorp.mit-license.org
+Repository: https://github.com/date-fns/date-fns
+Bundled in: build/assets/plugin.js
+
+Package Name: decimal.js-light
+Version: 2.5.1
+License: MIT
+Copyright: Copyright (c) 2020 Michael Mclaughlin
+Repository: https://github.com/MikeMcl/decimal.js-light
+Bundled in: build/assets/plugin.js
+
+Package Name: dompurify
+Version: 3.4.17
+License: (MPL-2.0 OR Apache-2.0)
+Copyright: Copyright (c) Cure53 and other contributors
+Repository: https://github.com/cure53/DOMPurify
+Bundled in: build/assets/purify.es.js
+
+Package Name: es-toolkit
+Version: 1.52.0
+License: MIT
+Copyright: Copyright (c) 2024 Viva Republica, Inc.
+Repository: https://github.com/toss/es-toolkit
+Bundled in: build/assets/plugin.js
+
+Package Name: eventemitter3
+Version: 5.0.4
+License: MIT
+Copyright: Copyright (c) 2014 Arnout Kazemier
+Repository: https://github.com/primus/eventemitter3
+Bundled in: build/assets/plugin.js
+
+Package Name: fast-png
+Version: 6.4.0
+License: MIT
+Copyright: Copyright (c) 2015 Michaël Zasso
+Repository: https://github.com/image-js/fast-png
+Bundled in: build/assets/plugin.js
+
+Package Name: fflate
+Version: 0.8.3
+License: MIT
+Copyright: Copyright (c) 2026 Arjun Barrett
+Repository: https://github.com/101arrowz/fflate
+Bundled in: build/assets/plugin.js
+
+Package Name: framer-motion
+Version: 12.43.0
+License: MIT
+Copyright: Copyright (c) 2018 Framer B.V.
+Repository: https://github.com/motiondivision/motion/
+Bundled in: build/assets/plugin.js
+
+Package Name: html2canvas
+Version: 1.4.1
+License: MIT
+Copyright: Copyright (c) 2012 Niklas von Hertzen
+Repository: https://github.com/niklasvh/html2canvas
+Bundled in: build/assets/html2canvas.esm.js
+
+Package Name: html2canvas-pro
+Version: 2.5.0
+License: MIT
+Copyright: Copyright (c) 2024-present yorickshan and html2canvas-pro contributors
+Repository: https://github.com/yorickshan/html2canvas-pro
+Bundled in: build/assets/plugin.js
+
+Package Name: immer
+Version: 11.1.21
+License: MIT
+Copyright: Copyright (c) 2017 Michel Weststrate
+Repository: https://github.com/immerjs/immer
+Bundled in: build/assets/plugin.js
+
+Package Name: internmap
+Version: 2.0.3
+License: ISC
+Copyright: Copyright 2021 Mike Bostock
+Repository: https://github.com/mbostock/internmap
+Bundled in: build/assets/plugin.js
+
+Package Name: iobuffer
+Version: 5.4.0
+License: MIT
+Copyright: Copyright (c) 2015 Michaël Zasso
+Repository: https://github.com/image-js/iobuffer
+Bundled in: build/assets/plugin.js
+
+Package Name: jspdf
+Version: 4.2.1
+License: MIT
+Copyright: Copyright
+Repository: https://github.com/parallax/jsPDF
+Bundled in: build/assets/plugin.js
+
+Package Name: jspdf-autotable
+Version: 5.0.8
+License: MIT
+Copyright: Copyright (c) 2014 Simon Bengtsson, https://github.com/simonbengtsson/jspdf-autotable
+Repository: https://github.com/simonbengtsson/jsPDF-AutoTable
+Bundled in: build/assets/plugin.js
+
+Package Name: lucide-react
+Version: 0.546.0
+License: ISC
+Copyright: Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2023 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2025.
+Repository: https://github.com/lucide-icons/lucide
+Bundled in: build/assets/plugin.js
+
+Package Name: motion
+Version: 12.43.0
+License: MIT
+Copyright: Copyright (c) 2024 [Motion](https://motion.dev) B.V.
+Repository: https://github.com/motiondivision/motion
+Bundled in: build/assets/plugin.js
+
+Package Name: motion-dom
+Version: 12.43.0
+License: MIT
+Copyright: Copyright (c) 2024 [Motion](https://motion.dev) B.V.
+Repository: https://github.com/motiondivision/motion
+Bundled in: build/assets/plugin.js
+
+Package Name: motion-utils
+Version: 12.39.0
+License: MIT
+Copyright: Copyright (c) 2024 [Motion](https://motion.dev) B.V.
+Repository: https://github.com/motiondivision/motion
+Bundled in: build/assets/plugin.js
+
+Package Name: pako
+Version: 2.2.0
+License: (MIT AND Zlib)
+Copyright: Copyright (C) 2014-2017 by Vitaly Puzrin and Andrei Tuputcyn
+Repository: https://github.com/nodeca/pako
+Bundled in: build/assets/plugin.js
+
+Package Name: performance-now
+Version: 2.1.0
+License: MIT
+Copyright: Copyright (c) 2013 Braveg1rl
+Repository: https://github.com/braveg1rl/performance-now
+Bundled in: build/assets/index.es.js
+
+Package Name: raf
+Version: 3.4.1
+License: MIT
+Copyright: Copyright 2013 Chris Dickinson <chris@neversaw.us>
+Repository: https://github.com/chrisdickinson/raf
+Bundled in: build/assets/index.es.js
+
+Package Name: react
+Version: 19.3.0
+License: MIT
+Copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+Repository: https://github.com/react/react
+Bundled in: build/assets/plugin.js, build/assets/vendor-react.js
+
+Package Name: react-datepicker
+Version: 9.1.0
+License: MIT
+Copyright: Copyright (c) 2014-2025 HackerOne Inc and individual contributors
+Repository: https://github.com/Hacker0x01/react-datepicker
+Bundled in: build/assets/plugin.js
+
+Package Name: react-dom
+Version: 19.3.0
+License: MIT
+Copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+Repository: https://github.com/react/react
+Bundled in: build/assets/plugin.js, build/assets/vendor-react.js
+
+Package Name: react-is
+Version: 19.3.0
+License: MIT
+Copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+Repository: https://github.com/react/react
+Bundled in: build/assets/plugin.js
+
+Package Name: react-redux
+Version: 9.3.0
+License: MIT
+Copyright: Copyright (c) 2015-present Dan Abramov
+Repository: https://github.com/reduxjs/react-redux
+Bundled in: build/assets/plugin.js
+
+Package Name: recharts
+Version: 3.10.1
+License: MIT
+Copyright: Copyright (c) 2015-present recharts
+Repository: https://github.com/recharts/recharts
+Bundled in: build/assets/plugin.js
+
+Package Name: redux
+Version: 5.0.1
+License: MIT
+Copyright: Copyright (c) 2015-present Dan Abramov
+Repository: https://github.com/reduxjs/redux
+Bundled in: build/assets/plugin.js
+
+Package Name: redux-thunk
+Version: 3.1.0
+License: MIT
+Copyright: Copyright (c) 2015-present Dan Abramov
+Repository: https://github.com/reduxjs/redux-thunk
+Bundled in: build/assets/plugin.js
+
+Package Name: reselect
+Version: 5.2.0
+License: MIT
+Copyright: Copyright (c) 2015-2018 Reselect Contributors
+Repository: https://github.com/reduxjs/reselect
+Bundled in: build/assets/plugin.js
+
+Package Name: rgbcolor
+Version: 1.0.1
+License: MIT OR SEE LICENSE IN FEEL-FREE.md
+Copyright: Copyright (c) 2016 Stoyan Stefanov, http://phpied.com/
+Repository: https://github.com/yetzt/node-rgbcolor
+Bundled in: build/assets/index.es.js
+
+Package Name: scheduler
+Version: 0.28.0
+License: MIT
+Copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+Repository: https://github.com/react/react
+Bundled in: build/assets/plugin.js
+
+Package Name: stackblur-canvas
+Version: 2.7.0
+License: MIT
+Copyright: Copyright (c) 2010 Mario Klingemann
+Repository: https://github.com/flozz/StackBlur
+Bundled in: build/assets/index.es.js
+
+Package Name: svg-pathdata
+Version: 6.0.3
+License: MIT
+Copyright: Copyright © 2017 Nicolas Froidure
+Repository: https://github.com/nfroidure/svg-pathdata
+Bundled in: build/assets/index.es.js
+
+Package Name: text-segmentation
+Version: 1.0.3
+License: MIT
+Copyright: Copyright holder and notice are in the LICENSE file shipped with the package on npm
+Repository: https://www.npmjs.com/package/text-segmentation
+Bundled in: build/assets/plugin.js, build/assets/html2canvas.esm.js
+
+Package Name: tiny-invariant
+Version: 1.3.3
+License: MIT
+Copyright: Copyright (c) 2019 Alexander Reardon
+Repository: https://github.com/alexreardon/tiny-invariant
+Bundled in: build/assets/plugin.js
+
+Package Name: tslib
+Version: 2.8.1
+License: 0BSD
+Copyright: Copyright (c) Microsoft Corporation
+Repository: https://www.npmjs.com/package/tslib
+Bundled in: build/assets/html2canvas.esm.js, build/assets/index.es.js
+
+Package Name: use-sync-external-store
+Version: 1.7.0
+License: MIT
+Copyright: Copyright (c) Meta Platforms, Inc. and affiliates.
+Repository: https://github.com/react/react
+Bundled in: build/assets/plugin.js
+
+Package Name: utrie
+Version: 1.0.2
+License: MIT
+Copyright: Copyright holder and notice are in the LICENSE file shipped with the package on npm
+Repository: https://www.npmjs.com/package/utrie
+Bundled in: build/assets/plugin.js, build/assets/html2canvas.esm.js
+
+Package Name: tailwindcss
+Version: 4.3.3
+License: MIT
+Copyright: See the license banner at the top of build/assets/plugin.css
+Repository: https://github.com/tailwindlabs/tailwindcss
+Bundled in: build/assets/plugin.css (generated CSS)
+
+==============================================================================
+B. Fonts (assets/fonts/, loaded locally by assets/css/imgsentry-fonts.css)
+==============================================================================
+
+Name: Inter (variable)
+License: SIL Open Font License 1.1 (OFL-1.1)
+Copyright: Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)
+Files: assets/fonts/inter-latin-wght-normal.woff2, assets/fonts/inter-latin-ext-wght-normal.woff2
+License text: assets/fonts/LICENSE-Inter.txt
+
+Name: Red Hat Display (variable)
+License: SIL Open Font License 1.1 (OFL-1.1)
+Copyright: Copyright 2024 The Red Hat Project Authors (https://github.com/RedHatOfficial/RedHatFont)
+Files: assets/fonts/red-hat-display-latin-wght-normal.woff2
+License text: assets/fonts/LICENSE-RedHatDisplay.txt
+
+==============================================================================
+C. Other libraries shipped inside the plugin folder
+==============================================================================
+
+Name: Action Scheduler
+Version: 3.8.2
+License: GPL-3.0-or-later
+Copyright: Copyright 2019 Automattic, Inc.
+Repository: https://github.com/woocommerce/action-scheduler
+Location: lib/action-scheduler/
+License text: lib/action-scheduler/license.txt
+
+Name: Freemius WordPress SDK
+Version: 2.13.5
+License: GPL-3.0
+Copyright: Copyright (c) 2015, Freemius, Inc.
+Repository: https://github.com/Freemius/wordpress-sdk
+Location: vendor/freemius/
+License text: vendor/freemius/LICENSE.txt
+
+Name: CodeMirror
+Version: 5.65.13
+License: MIT
+Copyright: Copyright (C) 2017 by Marijn Haverbeke and others
+Repository: https://github.com/codemirror/codemirror5
+Location: assets/vendor/codemirror/ (only in the Pro package, it is removed from the free version)
+License text: assets/vendor/codemirror/LICENSE

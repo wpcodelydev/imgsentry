@@ -1,0 +1,289 @@
+/**
+ * ImgSentry - Media Library column.
+ * Scoped to .imgsentry-ml so it cannot affect other admin screens.
+ */
+
+.fixed .column-imgsentry_optimizer {
+	width: 200px;
+}
+
+/* Buttons sit in the middle of the row, like the other optimizer columns. */
+.wp-list-table td.column-imgsentry_optimizer {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.imgsentry-ml {
+	--imgsentry-accent: #a61e69;
+	--imgsentry-accent-soft: #fbeaf3;
+	--imgsentry-ok: #1a7f4b;
+	--imgsentry-ok-soft: #e7f6ee;
+	--imgsentry-err: #b32d2e;
+	--imgsentry-err-soft: #fbeaea;
+	--imgsentry-line: #dcdcde;
+	--imgsentry-muted: #646970;
+
+	position: relative;
+	display: block;
+	max-width: 190px;
+	margin: 0 auto;
+	line-height: 1.4;
+	text-align: center;
+}
+
+.imgsentry-ml-na {
+	color: var(--imgsentry-muted, #646970);
+}
+
+/* Optimize button (primary) uses the plugin accent. */
+.imgsentry-ml .button.button-primary {
+	background: var(--imgsentry-accent);
+	border-color: var(--imgsentry-accent);
+	color: #fff;
+}
+
+.imgsentry-ml .button.button-primary:hover,
+.imgsentry-ml .button.button-primary:focus {
+	background: #8c1858;
+	border-color: #8c1858;
+	color: #fff;
+}
+
+.imgsentry-ml .button.button-primary:focus-visible,
+.imgsentry-ml .button-link:focus-visible {
+	outline: 2px solid var(--imgsentry-accent);
+	outline-offset: 2px;
+}
+
+.imgsentry-ml .button:disabled,
+.imgsentry-ml .button-link:disabled {
+	opacity: 0.55;
+	cursor: default;
+}
+
+/* Not optimized yet: a single button. */
+.imgsentry-ml .imgsentry-ml__btn {
+	white-space: nowrap;
+}
+
+/* Already optimized (by another plugin): message, "Try again", and two small links. */
+.imgsentry-ml__external {
+	margin: 0 0 8px;
+	font-size: 12px;
+	line-height: 1.5;
+	color: #3c434a;
+}
+
+.imgsentry-ml .imgsentry-ml__retry {
+	border-color: var(--imgsentry-accent);
+	color: var(--imgsentry-accent);
+	background: #fff;
+	font-weight: 600;
+}
+
+.imgsentry-ml .imgsentry-ml__retry:hover,
+.imgsentry-ml .imgsentry-ml__retry:focus {
+	border-color: var(--imgsentry-accent);
+	background: var(--imgsentry-accent-soft);
+	color: #8c1858;
+}
+
+.imgsentry-ml .imgsentry-ml__retry:focus-visible {
+	outline: 2px solid var(--imgsentry-accent);
+	outline-offset: 2px;
+}
+
+.imgsentry-ml__links {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+	margin-top: 8px;
+}
+
+.imgsentry-ml__links .button-link {
+	font-size: 12px;
+	text-align: left;
+	color: var(--imgsentry-accent);
+	text-decoration: underline;
+}
+
+.imgsentry-ml__links .button-link:hover {
+	color: #8c1858;
+}
+
+/* Optimized: sizes always visible, toggle opens the rest. */
+.imgsentry-ml__panel[hidden] {
+	display: none;
+}
+
+.imgsentry-ml__details {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	text-align: left;
+}
+
+.imgsentry-ml__row {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 3px 0;
+}
+
+.imgsentry-ml__row dt {
+	margin: 0;
+	color: #3c434a;
+}
+
+.imgsentry-ml__row dd {
+	margin: 0;
+	font-weight: 600;
+	text-align: right;
+	color: #1d2327;
+}
+
+.imgsentry-ml__row dd.is-accent {
+	color: var(--imgsentry-accent);
+}
+
+.imgsentry-ml .imgsentry-ml__toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	margin: 8px auto;
+	padding: 3px 10px;
+	border: 0;
+	border-radius: 3px;
+	background: var(--imgsentry-accent);
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1.6;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.imgsentry-ml .imgsentry-ml__toggle:hover,
+.imgsentry-ml .imgsentry-ml__toggle:focus,
+.imgsentry-ml .imgsentry-ml__toggle[aria-expanded="true"] {
+	background: #8c1858;
+	color: #fff;
+}
+
+.imgsentry-ml .imgsentry-ml__toggle:focus-visible {
+	outline: 2px solid var(--imgsentry-accent);
+	outline-offset: 2px;
+}
+
+.imgsentry-ml__toggle .dashicons {
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.imgsentry-ml__toggle[aria-expanded="true"] .dashicons {
+	transform: rotate(180deg);
+}
+
+/* Re-Optimize / Restore Original: icon + text. */
+.imgsentry-ml__actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	margin-top: 6px;
+	padding-top: 8px;
+	border-top: 1px solid var(--imgsentry-line);
+}
+
+.imgsentry-ml .imgsentry-ml__act {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	text-decoration: none;
+	color: var(--imgsentry-accent);
+}
+
+.imgsentry-ml .imgsentry-ml__act:hover {
+	color: #8c1858;
+	text-decoration: underline;
+}
+
+.imgsentry-ml__act .dashicons {
+	width: 12px;
+	height: 12px;
+	font-size: 12px;
+	line-height: 12px;
+}
+
+/* "Already optimized" cell: same centered, icon style as the optimized cell. */
+.imgsentry-ml.is-external .imgsentry-ml__actions {
+	margin-top: 10px;
+}
+
+/* Messages. */
+.imgsentry-ml__notice {
+	margin: 0 0 8px;
+	padding: 6px 8px;
+	border-radius: 4px;
+	border-left: 3px solid;
+	font-size: 12px;
+}
+
+.imgsentry-ml__notice--success {
+	background: var(--imgsentry-ok-soft);
+	border-color: var(--imgsentry-ok);
+	color: #14532d;
+}
+
+.imgsentry-ml__notice--error {
+	background: var(--imgsentry-err-soft);
+	border-color: var(--imgsentry-err);
+	color: #7a1c1d;
+}
+
+/* Busy state: the button disappears and "Optimizing…" takes its place. */
+.imgsentry-ml.is-busy > *:not(.imgsentry-ml__busy) {
+	display: none;
+}
+
+.imgsentry-ml__busy {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	box-sizing: border-box;
+	min-height: 30px;
+	padding: 0 12px;
+	border: 1px solid var(--imgsentry-accent);
+	border-radius: 3px;
+	background: #fff;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 2.15384615;
+	color: var(--imgsentry-accent);
+}
+
+.imgsentry-ml__spinner {
+	width: 14px;
+	height: 14px;
+	border: 2px solid var(--imgsentry-accent-soft);
+	border-top-color: var(--imgsentry-accent);
+	border-radius: 50%;
+	animation: imgsentry-ml-spin 0.8s linear infinite;
+}
+
+@keyframes imgsentry-ml-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.imgsentry-ml__spinner {
+		animation-duration: 2.4s;
+	}
+}
